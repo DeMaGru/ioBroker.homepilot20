@@ -157,6 +157,7 @@ function controlHomepilot(id, input) {
 		//role == level.blind
 		} else if (deviceNumberId == '35000864' /*DuoFern-Connect-Aktor-9477*/ ||
 					deviceNumberId == '14234511' /*DuoFern-RolloTronStandard*/ ||
+					deviceNumberId == '10122345' /*DuoFern-RolloTronStandard Pure Smart*/ ||
 					deviceNumberId == '35000662' /*DuoFern-Rohrmotor-Aktor*/ ||
 					deviceNumberId == '31500162' /*DuoFern-Rohrmotorsteuerung*/ ||
 					deviceNumberId == '36500172' /*DuoFern-TrollBasis-5615*/ ||
@@ -780,7 +781,19 @@ function calculatePath(result, type) {
 			if (type == 'Actuator' && !isBridge) {
 				additionalDeviceSettings.push(deviceId);
 			}
-            break;
+           
+	   break;
+		
+		case "10122345":
+			deviceType = 'DuoFern-RolloTron-Pure-Smart';
+			deviceRole = 'level.blind';
+			
+			if (type == 'Actuator' && !isBridge) {
+				additionalDeviceSettings.push(deviceId);
+			}
+
+
+	    break;
 			
 		case "35000662":
 			deviceType = 'DuoFernRohrmotor-Aktor';
@@ -2236,6 +2249,26 @@ function doAdditional(toDoList, type) {
 									var value = (result.payload.device.capabilities.filter((x)=>x.name === "DUSK_AUTO_CFG"))[0].value;
 									doAttributeWithTypeBoolean(element, type + '.' + element + '-' + deviceNumberId + '.Attribute.', 'DUSK_AUTO_CFG', value == 'true' ? true : false, 'switch', 'Abenddämmerung', true, hashMapName);
 									break;
+
+								case "10122345": /*DuoFern-Rollo-Pure-Smart*/
+									var value = (result.payload.device.capabilities.filter((x)=>x.name === "AUTO_MODE_CFG"))[0].value;
+									doAttributeWithTypeBoolean(element, type + '.' + element + '-' + deviceNumberId + '.Attribute.', 'AUTO_MODE_CFG', value == 'true' ? true : false, 'switch', 'Automatikbetrieb', true, hashMapName);
+									
+									var value = (result.payload.device.capabilities.filter((x)=>x.name === "TIME_AUTO_CFG"))[0].value;
+                                    doAttributeWithTypeBoolean(element, type + '.' + element + '-' + deviceNumberId + '.Attribute.', 'TIME_AUTO_CFG', value == 'true' ? true : false, 'switch', 'Zeit', true, hashMapName);
+
+									var value = (result.payload.device.capabilities.filter((x)=>x.name === "SUN_AUTO_CFG"))[0].value;
+									doAttributeWithTypeBoolean(element, type + '.' + element + '-' + deviceNumberId + '.Attribute.', 'SUN_AUTO_CFG', value == 'true' ? true : false, 'switch', 'Sonne', true, hashMapName);
+									
+									var value = (result.payload.device.capabilities.filter((x)=>x.name === "DAWN_AUTO_CFG"))[0].value;
+									doAttributeWithTypeBoolean(element, type + '.' + element + '-' + deviceNumberId + '.Attribute.', 'DAWN_AUTO_CFG', value == 'true' ? true : false, 'switch', 'Morgendämmerung', true, hashMapName);
+									
+									var value = (result.payload.device.capabilities.filter((x)=>x.name === "DUSK_AUTO_CFG"))[0].value;
+									doAttributeWithTypeBoolean(element, type + '.' + element + '-' + deviceNumberId + '.Attribute.', 'DUSK_AUTO_CFG', value == 'true' ? true : false, 'switch', 'Abenddämmerung', true, hashMapName);
+									break;
+
+								
+
 
 								case "14236011": /*DuoFern-RolloTron-Pro-Comfort-9800*/
 									var value = (result.payload.device.capabilities.filter((x)=>x.name === "AUTO_MODE_CFG"))[0].value;
